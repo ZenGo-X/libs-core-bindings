@@ -1,0 +1,28 @@
+running: "cc" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/Users/gary/Coding/libs-core-bindings/target/debug/build/secp256k1-aa19fbc70f8e337b/out/depend/check_uint128_t.o" "-c" "depend/check_uint128_t.c"
+exit code: 0
+running: "ar" "crs" "/Users/gary/Coding/libs-core-bindings/target/debug/build/secp256k1-aa19fbc70f8e337b/out/libcheck_uint128_t.a" "/Users/gary/Coding/libs-core-bindings/target/debug/build/secp256k1-aa19fbc70f8e337b/out/depend/check_uint128_t.o"
+exit code: 0
+TARGET = Some("x86_64-apple-darwin")
+OPT_LEVEL = Some("0")
+HOST = Some("x86_64-apple-darwin")
+CC_x86_64-apple-darwin = None
+CC_x86_64_apple_darwin = None
+HOST_CC = None
+CC = None
+CFLAGS_x86_64-apple-darwin = None
+CFLAGS_x86_64_apple_darwin = None
+HOST_CFLAGS = None
+CFLAGS = None
+DEBUG = Some("true")
+running: "cc" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-I" "depend/secp256k1/" "-I" "depend/secp256k1/include" "-I" "depend/secp256k1/src" "-Wall" "-Wextra" "-g" "-Wno-unused-function" "-DSECP256K1_BUILD=1" "-DUSE_NUM_NONE=1" "-DUSE_FIELD_INV_BUILTIN=1" "-DUSE_SCALAR_INV_BUILTIN=1" "-DUSE_ENDOMORPHISM=1" "-DENABLE_MODULE_ECDH=1" "-DENABLE_MODULE_RECOVERY=1" "-DUSE_FIELD_5X52=1" "-DUSE_SCALAR_4X64=1" "-DHAVE___INT128=1" "-o" "/Users/gary/Coding/libs-core-bindings/target/debug/build/secp256k1-aa19fbc70f8e337b/out/depend/secp256k1/contrib/lax_der_parsing.o" "-c" "depend/secp256k1/contrib/lax_der_parsing.c"
+exit code: 0
+running: "cc" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-I" "depend/secp256k1/" "-I" "depend/secp256k1/include" "-I" "depend/secp256k1/src" "-Wall" "-Wextra" "-g" "-Wno-unused-function" "-DSECP256K1_BUILD=1" "-DUSE_NUM_NONE=1" "-DUSE_FIELD_INV_BUILTIN=1" "-DUSE_SCALAR_INV_BUILTIN=1" "-DUSE_ENDOMORPHISM=1" "-DENABLE_MODULE_ECDH=1" "-DENABLE_MODULE_RECOVERY=1" "-DUSE_FIELD_5X52=1" "-DUSE_SCALAR_4X64=1" "-DHAVE___INT128=1" "-o" "/Users/gary/Coding/libs-core-bindings/target/debug/build/secp256k1-aa19fbc70f8e337b/out/depend/secp256k1/src/secp256k1.o" "-c" "depend/secp256k1/src/secp256k1.c"
+exit code: 0
+AR_x86_64-apple-darwin = None
+AR_x86_64_apple_darwin = None
+HOST_AR = None
+AR = None
+running: "ar" "crs" "/Users/gary/Coding/libs-core-bindings/target/debug/build/secp256k1-aa19fbc70f8e337b/out/libsecp256k1.a" "/Users/gary/Coding/libs-core-bindings/target/debug/build/secp256k1-aa19fbc70f8e337b/out/depend/secp256k1/contrib/lax_der_parsing.o" "/Users/gary/Coding/libs-core-bindings/target/debug/build/secp256k1-aa19fbc70f8e337b/out/depend/secp256k1/src/secp256k1.o"
+exit code: 0
+cargo:rustc-link-lib=static=secp256k1
+cargo:rustc-link-search=native=/Users/gary/Coding/libs-core-bindings/target/debug/build/secp256k1-aa19fbc70f8e337b/out
