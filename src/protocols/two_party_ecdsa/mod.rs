@@ -27,7 +27,6 @@ struct Party1SecondMessageBindings {
 
 #[derive(Serialize, Deserialize)]
 struct PartyTwoSecondMessageBindings {
-    party_two_second_message: party_two::KeyGenSecondMsg,
     paillier_key_pair: party_two::PaillierPublic,
     pub challenge: Challenge,
     verification_aid: VerificationAid,
@@ -79,35 +78,78 @@ pub fn party_two_second_message(
     rp_proof_str: String
 ) -> String {
     let party_one_first_message_pk_commitment: BigInt =
-        serde_json::from_str(&party_one_first_message_pk_commitment_str).unwrap();
+        match serde_json::from_str(&party_one_first_message_pk_commitment_str) {
+            Ok(v) => v,
+            Err(e) => panic!("Unable to serialize party_one_first_message_pk_commitment {}, due to {}",
+                             &party_one_first_message_pk_commitment_str, e.to_string()),
+        };
 
     let party_one_first_message_zk_pok_commitment: BigInt =
-        serde_json::from_str(&party_one_first_message_zk_pok_commitment_str).unwrap();
+        match serde_json::from_str(&party_one_first_message_zk_pok_commitment_str) {
+            Ok(v) => v,
+            Err(e) => panic!("Unable to serialize party_one_first_message_zk_pok_commitment {}, due to {}",
+                             &party_one_first_message_zk_pok_commitment_str, e.to_string()),
+        };
 
     let party_one_second_message_zk_pok_blind_factor: BigInt =
-        serde_json::from_str(&party_one_second_message_zk_pok_blind_factor_str).unwrap();
+        match serde_json::from_str(&party_one_second_message_zk_pok_blind_factor_str) {
+            Ok(v) => v,
+            Err(e) => panic!("Unable to serialize party_one_second_message_zk_pok_blind_factor {}, due to {}",
+                             &party_one_second_message_zk_pok_blind_factor_str, e.to_string()),
+        };
 
     let party_one_second_message_public_share: GE =
-        serde_json::from_str(&party_one_second_message_public_share_str).unwrap();
+        match serde_json::from_str(&party_one_second_message_public_share_str) {
+            Ok(v) => v,
+            Err(e) => panic!("Unable to serialize party_one_second_message_public_share {}, due to {}",
+                             &party_one_second_message_public_share_str, e.to_string()),
+        };
 
     let party_one_second_message_pk_commitment_blind_factor: BigInt =
-        serde_json::from_str(&party_one_second_message_pk_commitment_blind_factor_str).unwrap();
+        match serde_json::from_str(&party_one_second_message_pk_commitment_blind_factor_str) {
+            Ok(v) => v,
+            Err(e) => panic!("Unable to serialize party_one_second_message_pk_commitment_blind_factor {}, due to {}",
+                             &party_one_second_message_pk_commitment_blind_factor_str, e.to_string()),
+        };
 
     let party_one_second_message_d_log_proof: DLogProof =
-        serde_json::from_str(&party_one_second_message_d_log_proof_str).unwrap();
+        match serde_json::from_str(&party_one_second_message_d_log_proof_str) {
+            Ok(v) => v,
+            Err(e) => panic!("Unable to serialize party_one_second_message_d_log_proof {}, due to {}",
+                             &party_one_second_message_d_log_proof_str, e.to_string()),
+        };
 
     let paillier_encryption_key: EncryptionKey =
-        serde_json::from_str(&paillier_encryption_key_str).unwrap();
+        match serde_json::from_str(&paillier_encryption_key_str) {
+            Ok(v) => v,
+            Err(e) => panic!("Unable to serialize paillier_encryption_key_str {}, due to {}",
+                             &paillier_encryption_key_str, e.to_string()),
+        };
 
     let paillier_encrypted_share: BigInt =
-        serde_json::from_str(&paillier_encrypted_share_str).unwrap();
+        match serde_json::from_str(&paillier_encrypted_share_str) {
+            Ok(v) => v,
+            Err(e) => panic!("Unable to serialize paillier_encrypted_share {}, due to {}",
+                             &paillier_encrypted_share_str, e.to_string()),
+        };
 
     let rp_encrypted_pairs: EncryptedPairs =
-        serde_json::from_str(&rp_encrypted_pairs_str).unwrap();
+        match serde_json::from_str(&rp_encrypted_pairs_str) {
+            Ok(v) => v,
+            Err(e) => panic!("Unable to serialize rp_encrypted_pairs_str {}, due to {}",
+                             &rp_encrypted_pairs_str, e.to_string()),
+        };
 
-    let rp_challenge: ChallengeBits = serde_json::from_str(&rp_challenge_str).unwrap();
+    let rp_challenge: ChallengeBits = match serde_json::from_str(&rp_challenge_str) {
+        Ok(v) => v,
+        Err(e) => panic!("Unable to serialize rp_challenge_str {}, due to {}",
+                         &rp_challenge_str, e.to_string()),
+    };
 
-    let rp_proof: Proof = serde_json::from_str(&rp_proof_str).unwrap();
+    let rp_proof: Proof = match serde_json::from_str(&rp_proof_str) {
+        Ok(v) => v,
+        Err(e) => panic!("Unable to serialize proof {}, due to {}", &rp_proof_str, e.to_string()),
+    };
 
     let key_gen_second_message = MasterKey2::key_gen_second_message(
         &party_one_first_message_pk_commitment,
@@ -129,7 +171,6 @@ pub fn party_two_second_message(
     assert!(key_gen_second_message_raw.0.is_ok());
 
     to_json_str(PartyTwoSecondMessageBindings {
-        party_two_second_message: key_gen_second_message_raw.0.unwrap(),
         paillier_key_pair: key_gen_second_message_raw.1,
         challenge: key_gen_second_message_raw.2,
         verification_aid: key_gen_second_message_raw.3,
