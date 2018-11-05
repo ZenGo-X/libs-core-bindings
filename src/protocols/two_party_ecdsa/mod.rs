@@ -23,13 +23,13 @@ struct Party1SecondMessageBindings {
     pub encrypted_pairs: EncryptedPairs,
     pub challenge: ChallengeBits,
     pub proof: Proof,
+    pub correct_key_proof: NICorrectKeyProof
 }
 
 #[derive(Serialize, Deserialize)]
 struct PartyTwoSecondMessageBindings {
     paillier_key_pair: party_two::PaillierPublic,
-    pub challenge: Challenge,
-    verification_aid: VerificationAid,
+    pub pdl_challenge: party_two::PDLchallenge
 }
 
 pub fn party_one_first_message() -> String {
@@ -61,6 +61,7 @@ pub fn party_one_second_message(
         encrypted_pairs: party_one_second_message.2,
         challenge: party_one_second_message.3,
         proof: party_one_second_message.4,
+        correct_key_proof: party_one_second_message.5
     })
 }
 
@@ -75,7 +76,8 @@ pub fn party_two_second_message(
     paillier_encrypted_share_str: String,
     rp_encrypted_pairs_str: String,
     rp_challenge_str: String,
-    rp_proof_str: String
+    rp_proof_str: String,
+    correct_key_proof_str: String
 ) -> String {
     let party_one_first_message_pk_commitment: BigInt =
         match serde_json::from_str(&party_one_first_message_pk_commitment_str) {
@@ -151,6 +153,11 @@ pub fn party_two_second_message(
         Err(e) => panic!("Unable to serialize proof {}, due to {}", &rp_proof_str, e.to_string()),
     };
 
+    let correct_key_proof: NICorrectKeyProof = match serde_json::from_str(&correct_key_proof_str) {
+        Ok(v) => v,
+        Err(e) => panic!("Unable to serialize proof {}, due to {}", &correct_key_proof_str, e.to_string()),
+    };
+
     let key_gen_second_message = MasterKey2::key_gen_second_message(
         &party_one_first_message_pk_commitment,
         &party_one_first_message_zk_pok_commitment,
@@ -163,6 +170,7 @@ pub fn party_two_second_message(
         &rp_challenge,
         &rp_encrypted_pairs,
         &rp_proof,
+        &correct_key_proof
     );
 
     assert!(key_gen_second_message.is_ok());
@@ -172,31 +180,58 @@ pub fn party_two_second_message(
 
     to_json_str(PartyTwoSecondMessageBindings {
         paillier_key_pair: key_gen_second_message_raw.1,
-        challenge: key_gen_second_message_raw.2,
-        verification_aid: key_gen_second_message_raw.3,
+        pdl_challenge: key_gen_second_message_raw.2
     })
 }
 
-pub fn party_one_third_message(paillier_key_pair_str: String, challenge_str: String) -> String {
+pub fn party_one_third_message(paillier_key_pair_str: String, pdl_challenge_str: String) -> String {
     let paillier_key_pair: party_one::PaillierKeyPair = serde_json::from_str(&paillier_key_pair_str).unwrap();
-    let challenge: Challenge = serde_json::from_str(&challenge_str).unwrap();
-    let digest = MasterKey1::key_gen_third_message(&paillier_key_pair, &challenge);
+    let pdl_challenge: party_two::PDLchallenge = serde_json::from_str(&pdl_challenge_str).unwrap();
+    let pdl_prover = MasterKey1::key_gen_third_message(&paillier_key_pair, &pdl_challenge.c_tag);
 
-    assert!(digest.is_ok());
-    to_json_str(digest.unwrap())
+    to_json_str(pdl_prover)
 }
 
-pub fn party_two_third_message(party_one_third_message_str: String, verification_aid_str: String) -> String {
-    let party_one_third_message: CorrectKeyProof = serde_json::from_str(&party_one_third_message_str).unwrap();
-    let verification_aid: VerificationAid = serde_json::from_str(&verification_aid_str).unwrap();
+pub fn party_two_third_message(pdl_challenge_str: String) -> String {
+    let pdl_challenge: party_two::PDLchallenge = serde_json::from_str(&pdl_challenge_str).unwrap();
+    let pdl_decom_party2 = MasterKey2::key_gen_third_message(&pdl_challenge);
 
-    let key_gen_third_message =
-        MasterKey2::key_gen_third_message(&party_one_third_message, &verification_aid);
+    to_json_str(pdl_decom_party2)
+}
 
-    assert!(key_gen_third_message.is_ok());
+pub fn party_one_fourth_message(kg_party_one_first_message_str: String, pdl_challenge_str: String, pdl_prover_str: String, pdl_decom_party2_str: String) -> String {
+    let kg_party_one_first_message: party_one::KeyGenFirstMsg = serde_json::from_str(&kg_party_one_first_message_str).unwrap();
+    let pdl_challenge: party_two::PDLchallenge = serde_json::from_str(&pdl_challenge_str).unwrap();
+    let pdl_prover: party_one::PDL = serde_json::from_str(&pdl_prover_str).unwrap();
+    let pdl_decom_party2: party_two::PDLdecommit = serde_json::from_str(&pdl_decom_party2_str).unwrap();
+
+    let pdl_decom_party1 = MasterKey1::key_gen_fourth_message(
+        &pdl_prover,
+        &pdl_challenge.c_tag_tag,
+        &kg_party_one_first_message,
+        &pdl_decom_party2.a,
+        &pdl_decom_party2.b,
+        &pdl_decom_party2.blindness,
+    );
+
+    assert!(pdl_decom_party1.is_ok());
+    to_json_str(pdl_decom_party1.unwrap())
+}
+
+pub fn party_two_fourth_message(pdl_challenge_str: String, pdl_prover_str: String, pdl_decom_party1_str: String) -> String {
+    let pdl_challenge: party_two::PDLchallenge = serde_json::from_str(&pdl_challenge_str).unwrap();
+    let pdl_prover: party_one::PDL = serde_json::from_str(&pdl_prover_str).unwrap();
+    let pdl_decom_party1: party_one::PDLdecommit = serde_json::from_str(&pdl_decom_party1_str).unwrap();
+
+    assert!(MasterKey2::key_gen_fourth_message(
+        &pdl_challenge,
+        &pdl_decom_party1.blindness,
+        &pdl_decom_party1.q_hat,
+        &pdl_prover.c_hat,
+    ).is_ok());
+
     to_json_str(true)
 }
-
 
 pub fn party_one_get_master_key(
     cc_party_one_first_message_str: String,
