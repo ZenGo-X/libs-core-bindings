@@ -6,8 +6,8 @@ extern crate paillier;
 use self::cryptography_utils::cryptographic_primitives::proofs::dlog_zk_protocol::DLogProof;
 use self::cryptography_utils::cryptographic_primitives::twoparty::*;
 use self::cryptography_utils::GE;
-use self::kms::two_party::lindell_2017::*;
 use self::kms::two_party::lindell_2017::traits::ManagementSystem;
+use self::kms::two_party::lindell_2017::*;
 use self::multi_party_ecdsa::protocols::two_party_ecdsa::lindell_2017::*;
 use self::paillier::*;
 use serde_json;
@@ -23,13 +23,13 @@ struct Party1SecondMessageBindings {
     pub encrypted_pairs: EncryptedPairs,
     pub challenge: ChallengeBits,
     pub proof: Proof,
-    pub correct_key_proof: NICorrectKeyProof
+    pub correct_key_proof: NICorrectKeyProof,
 }
 
 #[derive(Serialize, Deserialize)]
 struct PartyTwoSecondMessageBindings {
     paillier_key_pair: party_two::PaillierPublic,
-    pub pdl_challenge: party_two::PDLchallenge
+    pub pdl_challenge: party_two::PDLchallenge,
 }
 
 pub fn party_one_first_message() -> String {
@@ -42,10 +42,12 @@ pub fn party_two_first_message() -> String {
 
 pub fn party_one_second_message(
     party_one_first_message_str: String,
-    party_two_first_message_proof_str: String) -> String
-{
-    let party_one_first_message: party_one::KeyGenFirstMsg = serde_json::from_str(&party_one_first_message_str).unwrap();
-    let party_two_first_message_proof: DLogProof = serde_json::from_str(&party_two_first_message_proof_str).unwrap();
+    party_two_first_message_proof_str: String,
+) -> String {
+    let party_one_first_message: party_one::KeyGenFirstMsg =
+        serde_json::from_str(&party_one_first_message_str).unwrap();
+    let party_two_first_message_proof: DLogProof =
+        serde_json::from_str(&party_two_first_message_proof_str).unwrap();
 
     let party_one_second_message = MasterKey1::key_gen_second_message(
         &party_one_first_message,
@@ -61,7 +63,7 @@ pub fn party_one_second_message(
         encrypted_pairs: party_one_second_message.2,
         challenge: party_one_second_message.3,
         proof: party_one_second_message.4,
-        correct_key_proof: party_one_second_message.5
+        correct_key_proof: party_one_second_message.5,
     })
 }
 
@@ -77,85 +79,123 @@ pub fn party_two_second_message(
     rp_encrypted_pairs_str: String,
     rp_challenge_str: String,
     rp_proof_str: String,
-    correct_key_proof_str: String
+    correct_key_proof_str: String,
 ) -> String {
     let party_one_first_message_pk_commitment: BigInt =
         match serde_json::from_str(&party_one_first_message_pk_commitment_str) {
             Ok(v) => v,
-            Err(e) => panic!("Unable to serialize party_one_first_message_pk_commitment {}, due to {}",
-                             &party_one_first_message_pk_commitment_str, e.to_string()),
+            Err(e) => panic!(
+                "Unable to serialize party_one_first_message_pk_commitment {}, due to {}",
+                &party_one_first_message_pk_commitment_str,
+                e.to_string()
+            ),
         };
 
     let party_one_first_message_zk_pok_commitment: BigInt =
         match serde_json::from_str(&party_one_first_message_zk_pok_commitment_str) {
             Ok(v) => v,
-            Err(e) => panic!("Unable to serialize party_one_first_message_zk_pok_commitment {}, due to {}",
-                             &party_one_first_message_zk_pok_commitment_str, e.to_string()),
+            Err(e) => panic!(
+                "Unable to serialize party_one_first_message_zk_pok_commitment {}, due to {}",
+                &party_one_first_message_zk_pok_commitment_str,
+                e.to_string()
+            ),
         };
 
     let party_one_second_message_zk_pok_blind_factor: BigInt =
         match serde_json::from_str(&party_one_second_message_zk_pok_blind_factor_str) {
             Ok(v) => v,
-            Err(e) => panic!("Unable to serialize party_one_second_message_zk_pok_blind_factor {}, due to {}",
-                             &party_one_second_message_zk_pok_blind_factor_str, e.to_string()),
+            Err(e) => panic!(
+                "Unable to serialize party_one_second_message_zk_pok_blind_factor {}, due to {}",
+                &party_one_second_message_zk_pok_blind_factor_str,
+                e.to_string()
+            ),
         };
 
     let party_one_second_message_public_share: GE =
         match serde_json::from_str(&party_one_second_message_public_share_str) {
             Ok(v) => v,
-            Err(e) => panic!("Unable to serialize party_one_second_message_public_share {}, due to {}",
-                             &party_one_second_message_public_share_str, e.to_string()),
+            Err(e) => panic!(
+                "Unable to serialize party_one_second_message_public_share {}, due to {}",
+                &party_one_second_message_public_share_str,
+                e.to_string()
+            ),
         };
 
-    let party_one_second_message_pk_commitment_blind_factor: BigInt =
-        match serde_json::from_str(&party_one_second_message_pk_commitment_blind_factor_str) {
-            Ok(v) => v,
-            Err(e) => panic!("Unable to serialize party_one_second_message_pk_commitment_blind_factor {}, due to {}",
-                             &party_one_second_message_pk_commitment_blind_factor_str, e.to_string()),
-        };
+    let party_one_second_message_pk_commitment_blind_factor: BigInt = match serde_json::from_str(
+        &party_one_second_message_pk_commitment_blind_factor_str,
+    ) {
+        Ok(v) => v,
+        Err(e) => panic!(
+            "Unable to serialize party_one_second_message_pk_commitment_blind_factor {}, due to {}",
+            &party_one_second_message_pk_commitment_blind_factor_str,
+            e.to_string()
+        ),
+    };
 
     let party_one_second_message_d_log_proof: DLogProof =
         match serde_json::from_str(&party_one_second_message_d_log_proof_str) {
             Ok(v) => v,
-            Err(e) => panic!("Unable to serialize party_one_second_message_d_log_proof {}, due to {}",
-                             &party_one_second_message_d_log_proof_str, e.to_string()),
+            Err(e) => panic!(
+                "Unable to serialize party_one_second_message_d_log_proof {}, due to {}",
+                &party_one_second_message_d_log_proof_str,
+                e.to_string()
+            ),
         };
 
     let paillier_encryption_key: EncryptionKey =
         match serde_json::from_str(&paillier_encryption_key_str) {
             Ok(v) => v,
-            Err(e) => panic!("Unable to serialize paillier_encryption_key_str {}, due to {}",
-                             &paillier_encryption_key_str, e.to_string()),
+            Err(e) => panic!(
+                "Unable to serialize paillier_encryption_key_str {}, due to {}",
+                &paillier_encryption_key_str,
+                e.to_string()
+            ),
         };
 
-    let paillier_encrypted_share: BigInt =
-        match serde_json::from_str(&paillier_encrypted_share_str) {
-            Ok(v) => v,
-            Err(e) => panic!("Unable to serialize paillier_encrypted_share {}, due to {}",
-                             &paillier_encrypted_share_str, e.to_string()),
-        };
+    let paillier_encrypted_share: BigInt = match serde_json::from_str(&paillier_encrypted_share_str)
+    {
+        Ok(v) => v,
+        Err(e) => panic!(
+            "Unable to serialize paillier_encrypted_share {}, due to {}",
+            &paillier_encrypted_share_str,
+            e.to_string()
+        ),
+    };
 
-    let rp_encrypted_pairs: EncryptedPairs =
-        match serde_json::from_str(&rp_encrypted_pairs_str) {
-            Ok(v) => v,
-            Err(e) => panic!("Unable to serialize rp_encrypted_pairs_str {}, due to {}",
-                             &rp_encrypted_pairs_str, e.to_string()),
-        };
+    let rp_encrypted_pairs: EncryptedPairs = match serde_json::from_str(&rp_encrypted_pairs_str) {
+        Ok(v) => v,
+        Err(e) => panic!(
+            "Unable to serialize rp_encrypted_pairs_str {}, due to {}",
+            &rp_encrypted_pairs_str,
+            e.to_string()
+        ),
+    };
 
     let rp_challenge: ChallengeBits = match serde_json::from_str(&rp_challenge_str) {
         Ok(v) => v,
-        Err(e) => panic!("Unable to serialize rp_challenge_str {}, due to {}",
-                         &rp_challenge_str, e.to_string()),
+        Err(e) => panic!(
+            "Unable to serialize rp_challenge_str {}, due to {}",
+            &rp_challenge_str,
+            e.to_string()
+        ),
     };
 
     let rp_proof: Proof = match serde_json::from_str(&rp_proof_str) {
         Ok(v) => v,
-        Err(e) => panic!("Unable to serialize proof {}, due to {}", &rp_proof_str, e.to_string()),
+        Err(e) => panic!(
+            "Unable to serialize proof {}, due to {}",
+            &rp_proof_str,
+            e.to_string()
+        ),
     };
 
     let correct_key_proof: NICorrectKeyProof = match serde_json::from_str(&correct_key_proof_str) {
         Ok(v) => v,
-        Err(e) => panic!("Unable to serialize proof {}, due to {}", &correct_key_proof_str, e.to_string()),
+        Err(e) => panic!(
+            "Unable to serialize proof {}, due to {}",
+            &correct_key_proof_str,
+            e.to_string()
+        ),
     };
 
     let key_gen_second_message = MasterKey2::key_gen_second_message(
@@ -170,7 +210,7 @@ pub fn party_two_second_message(
         &rp_challenge,
         &rp_encrypted_pairs,
         &rp_proof,
-        &correct_key_proof
+        &correct_key_proof,
     );
 
     assert!(key_gen_second_message.is_ok());
@@ -180,12 +220,13 @@ pub fn party_two_second_message(
 
     to_json_str(PartyTwoSecondMessageBindings {
         paillier_key_pair: key_gen_second_message_raw.1,
-        pdl_challenge: key_gen_second_message_raw.2
+        pdl_challenge: key_gen_second_message_raw.2,
     })
 }
 
 pub fn party_one_third_message(paillier_key_pair_str: String, pdl_challenge_str: String) -> String {
-    let paillier_key_pair: party_one::PaillierKeyPair = serde_json::from_str(&paillier_key_pair_str).unwrap();
+    let paillier_key_pair: party_one::PaillierKeyPair =
+        serde_json::from_str(&paillier_key_pair_str).unwrap();
     let pdl_challenge: party_two::PDLchallenge = serde_json::from_str(&pdl_challenge_str).unwrap();
     let pdl_prover = MasterKey1::key_gen_third_message(&paillier_key_pair, &pdl_challenge.c_tag);
 
@@ -199,15 +240,23 @@ pub fn party_two_third_message(pdl_challenge_str: String) -> String {
     to_json_str(pdl_decom_party2)
 }
 
-pub fn party_one_fourth_message(kg_party_one_first_message_str: String, pdl_challenge_str: String, pdl_prover_str: String, pdl_decom_party2_str: String) -> String {
-    let kg_party_one_first_message: party_one::KeyGenFirstMsg = serde_json::from_str(&kg_party_one_first_message_str).unwrap();
-    let pdl_challenge: party_two::PDLchallenge = serde_json::from_str(&pdl_challenge_str).unwrap();
+pub fn party_one_fourth_message(
+    kg_party_one_first_message_str: String,
+    pdl_challenge_c_tag_tag_str: String,
+    pdl_prover_str: String,
+    pdl_decom_party2_str: String,
+) -> String {
+    let kg_party_one_first_message: party_one::KeyGenFirstMsg =
+        serde_json::from_str(&kg_party_one_first_message_str).unwrap();
+    let pdl_challenge_c_tag_tag: BigInt =
+        serde_json::from_str(&pdl_challenge_c_tag_tag_str).unwrap();
     let pdl_prover: party_one::PDL = serde_json::from_str(&pdl_prover_str).unwrap();
-    let pdl_decom_party2: party_two::PDLdecommit = serde_json::from_str(&pdl_decom_party2_str).unwrap();
+    let pdl_decom_party2: party_two::PDLdecommit =
+        serde_json::from_str(&pdl_decom_party2_str).unwrap();
 
     let pdl_decom_party1 = MasterKey1::key_gen_fourth_message(
         &pdl_prover,
-        &pdl_challenge.c_tag_tag,
+        &pdl_challenge_c_tag_tag,
         &kg_party_one_first_message,
         &pdl_decom_party2.a,
         &pdl_decom_party2.b,
@@ -218,17 +267,24 @@ pub fn party_one_fourth_message(kg_party_one_first_message_str: String, pdl_chal
     to_json_str(pdl_decom_party1.unwrap())
 }
 
-pub fn party_two_fourth_message(pdl_challenge_str: String, pdl_prover_str: String, pdl_decom_party1_str: String) -> String {
+pub fn party_two_fourth_message(
+    pdl_challenge_str: String,
+    pdl_prover_str: String,
+    pdl_decom_party1_str: String,
+) -> String {
     let pdl_challenge: party_two::PDLchallenge = serde_json::from_str(&pdl_challenge_str).unwrap();
     let pdl_prover: party_one::PDL = serde_json::from_str(&pdl_prover_str).unwrap();
-    let pdl_decom_party1: party_one::PDLdecommit = serde_json::from_str(&pdl_decom_party1_str).unwrap();
+    let pdl_decom_party1: party_one::PDLdecommit =
+        serde_json::from_str(&pdl_decom_party1_str).unwrap();
 
-    assert!(MasterKey2::key_gen_fourth_message(
-        &pdl_challenge,
-        &pdl_decom_party1.blindness,
-        &pdl_decom_party1.q_hat,
-        &pdl_prover.c_hat,
-    ).is_ok());
+    assert!(
+        MasterKey2::key_gen_fourth_message(
+            &pdl_challenge,
+            &pdl_decom_party1.blindness,
+            &pdl_decom_party1.q_hat,
+            &pdl_prover.c_hat,
+        ).is_ok()
+    );
 
     to_json_str(true)
 }
@@ -238,13 +294,18 @@ pub fn party_one_get_master_key(
     cc_party_two_first_message_public_share_str: String,
     kg_party_one_first_message_str: String,
     kg_party_two_first_message_public_share_str: String,
-    paillier_key_pair_str: String) -> String
-{
-    let cc_party_one_first_message: dh_key_exchange::Party1FirstMessage = serde_json::from_str(&cc_party_one_first_message_str).unwrap();
-    let cc_party_two_first_message_public_share: GE = serde_json::from_str(&cc_party_two_first_message_public_share_str).unwrap();
-    let kg_party_one_first_message: party_one::KeyGenFirstMsg = serde_json::from_str(&kg_party_one_first_message_str).unwrap();
-    let kg_party_two_first_message_public_share: GE = serde_json::from_str(&kg_party_two_first_message_public_share_str).unwrap();
-    let paillier_key_pair: party_one::PaillierKeyPair = serde_json::from_str(&paillier_key_pair_str).unwrap();
+    paillier_key_pair_str: String,
+) -> String {
+    let cc_party_one_first_message: dh_key_exchange::Party1FirstMessage =
+        serde_json::from_str(&cc_party_one_first_message_str).unwrap();
+    let cc_party_two_first_message_public_share: GE =
+        serde_json::from_str(&cc_party_two_first_message_public_share_str).unwrap();
+    let kg_party_one_first_message: party_one::KeyGenFirstMsg =
+        serde_json::from_str(&kg_party_one_first_message_str).unwrap();
+    let kg_party_two_first_message_public_share: GE =
+        serde_json::from_str(&kg_party_two_first_message_public_share_str).unwrap();
+    let paillier_key_pair: party_one::PaillierKeyPair =
+        serde_json::from_str(&paillier_key_pair_str).unwrap();
 
     let party1_cc = MasterKey1::compute_chain_code(
         &cc_party_one_first_message,
@@ -266,13 +327,18 @@ pub fn party_two_get_master_key(
     cc_party_one_first_message_public_share_str: String,
     kg_party_two_first_message_str: String,
     kg_party_one_first_message_public_share_str: String,
-    party_two_paillier_str: String) -> String
-{
-    let cc_party_two_first_message: dh_key_exchange::Party2FirstMessage = serde_json::from_str(&cc_party_two_first_message_str).unwrap();
-    let cc_party_one_first_message_public_share: GE = serde_json::from_str(&cc_party_one_first_message_public_share_str).unwrap();
-    let kg_party_two_first_message: party_two::KeyGenFirstMsg = serde_json::from_str(&kg_party_two_first_message_str).unwrap();
-    let kg_party_one_first_message_public_share: GE = serde_json::from_str(&kg_party_one_first_message_public_share_str).unwrap();
-    let party_two_paillier: party_two::PaillierPublic = serde_json::from_str(&party_two_paillier_str).unwrap();
+    party_two_paillier_str: String,
+) -> String {
+    let cc_party_two_first_message: dh_key_exchange::Party2FirstMessage =
+        serde_json::from_str(&cc_party_two_first_message_str).unwrap();
+    let cc_party_one_first_message_public_share: GE =
+        serde_json::from_str(&cc_party_one_first_message_public_share_str).unwrap();
+    let kg_party_two_first_message: party_two::KeyGenFirstMsg =
+        serde_json::from_str(&kg_party_two_first_message_str).unwrap();
+    let kg_party_one_first_message_public_share: GE =
+        serde_json::from_str(&kg_party_one_first_message_public_share_str).unwrap();
+    let party_two_paillier: party_two::PaillierPublic =
+        serde_json::from_str(&party_two_paillier_str).unwrap();
 
     let party2_cc = MasterKey2::compute_chain_code(
         &cc_party_one_first_message_public_share,
@@ -297,11 +363,16 @@ pub fn party_two_compute_partial_signature(
     ep_party_one_first_message_public_share_str: String,
     message: String,
 ) -> String {
-    let party_two_paillier_ek: EncryptionKey = serde_json::from_str(&party_two_paillier_ek_str).unwrap();
-    let party_two_master_key_public_c_key: BigInt = serde_json::from_str(&party_two_master_key_public_c_key_str).unwrap();
-    let party_two_master_key_private: party_two::Party2Private = serde_json::from_str(&party_two_master_key_private_str).unwrap();
-    let ep_party_two_first_message: party_two::KeyGenFirstMsg = serde_json::from_str(&ep_party_two_first_message_str).unwrap();
-    let ep_party_one_first_message_public_share: GE = serde_json::from_str(&ep_party_one_first_message_public_share_str).unwrap();
+    let party_two_paillier_ek: EncryptionKey =
+        serde_json::from_str(&party_two_paillier_ek_str).unwrap();
+    let party_two_master_key_public_c_key: BigInt =
+        serde_json::from_str(&party_two_master_key_public_c_key_str).unwrap();
+    let party_two_master_key_private: party_two::Party2Private =
+        serde_json::from_str(&party_two_master_key_private_str).unwrap();
+    let ep_party_two_first_message: party_two::KeyGenFirstMsg =
+        serde_json::from_str(&ep_party_two_first_message_str).unwrap();
+    let ep_party_one_first_message_public_share: GE =
+        serde_json::from_str(&ep_party_one_first_message_public_share_str).unwrap();
     let message: BigInt = serde_json::from_str(&message).unwrap();
 
     let partial_sig = party_two::PartialSig::compute(
@@ -322,10 +393,13 @@ pub fn party_one_sign(
     ep_party_one_first_message_str: String,
     ep_party_two_first_message_public_share_str: String,
 ) -> String {
-    let party_one_private: party_one::Party1Private = serde_json::from_str(&party_one_private_str).unwrap();
+    let party_one_private: party_one::Party1Private =
+        serde_json::from_str(&party_one_private_str).unwrap();
     let c3: BigInt = serde_json::from_str(&c3_str).unwrap();
-    let ep_party_one_first_message: party_one::KeyGenFirstMsg = serde_json::from_str(&ep_party_one_first_message_str).unwrap();
-    let ep_party_two_first_message_public_share: GE = serde_json::from_str(&ep_party_two_first_message_public_share_str).unwrap();
+    let ep_party_one_first_message: party_one::KeyGenFirstMsg =
+        serde_json::from_str(&ep_party_one_first_message_str).unwrap();
+    let ep_party_two_first_message_public_share: GE =
+        serde_json::from_str(&ep_party_two_first_message_public_share_str).unwrap();
 
     let signature = party_one::Signature::compute(
         &party_one_private,
@@ -337,11 +411,10 @@ pub fn party_one_sign(
     to_json_str(signature)
 }
 
-
 pub fn party_two_get_child_master_key(
     party_two_master_key_str: String,
     x_str: String,
-    y_str: String
+    y_str: String,
 ) -> String {
     let party_two_master_key: MasterKey2 = serde_json::from_str(&party_two_master_key_str).unwrap();
     let x: BigInt = serde_json::from_str(&x_str).unwrap();
@@ -353,7 +426,7 @@ pub fn party_two_get_child_master_key(
 pub fn party_one_get_child_master_key(
     party_one_master_key_str: String,
     x_str: String,
-    y_str: String
+    y_str: String,
 ) -> String {
     let party_one_master_key: MasterKey1 = serde_json::from_str(&party_one_master_key_str).unwrap();
     let x: BigInt = serde_json::from_str(&x_str).unwrap();
@@ -368,7 +441,8 @@ pub fn party_one_verify_signatures(
     message_str: String,
 ) -> String {
     let signature: party_one::Signature = serde_json::from_str(&signature_str).unwrap();
-    let party_one_master_key_public_q: GE = serde_json::from_str(&party_one_master_key_public_q_str).unwrap();
+    let party_one_master_key_public_q: GE =
+        serde_json::from_str(&party_one_master_key_public_q_str).unwrap();
     let message: BigInt = serde_json::from_str(&message_str).unwrap();
 
     let is_valid = party_one::verify(&signature, &party_one_master_key_public_q, &message);
