@@ -397,17 +397,26 @@ pub fn party_one_sign_first_message() -> String {
 pub fn party_one_sign_second_message(
     party_one_master_key_str: String,
     sign_party_one_first_message_str: String,
-    sign_party_two_first_message_str: String,
+    eph_key_gen_first_message_party_two_pk_commitment_str: String,
+    eph_key_gen_first_message_party_two_zk_pok_commitment_str: String,
+    eph_key_gen_first_message_party_two_public_share_str: String,
     sign_party_two_second_message_str: String,
     message: String,
 ) -> String {
+
     let party_one_master_key: MasterKey1 = serde_json::from_str(&party_one_master_key_str).unwrap();
 
     let sign_party_one_first_message: party_one::EphKeyGenFirstMsg =
         serde_json::from_str(&sign_party_one_first_message_str).unwrap();
 
-    let sign_party_two_first_message: party_two::EphKeyGenFirstMsg =
-        serde_json::from_str(&sign_party_two_first_message_str).unwrap();
+    let eph_key_gen_first_message_party_two_pk_commitment =
+        serde_json::from_str(&eph_key_gen_first_message_party_two_pk_commitment_str).unwrap();
+
+    let eph_key_gen_first_message_party_two_zk_pok_commitment =
+        serde_json::from_str(&eph_key_gen_first_message_party_two_zk_pok_commitment_str).unwrap();
+
+    let eph_key_gen_first_message_party_two_public_share =
+        serde_json::from_str(&eph_key_gen_first_message_party_two_public_share_str).unwrap();
 
     let sign_party_two_second_message: party2::SignMessage =
         serde_json::from_str(&sign_party_two_second_message_str).unwrap();
@@ -416,7 +425,9 @@ pub fn party_one_sign_second_message(
 
     let sign_party_one_second_message = party_one_master_key.sign_second_message(
         &sign_party_two_second_message,
-        &sign_party_two_first_message,
+        &eph_key_gen_first_message_party_two_pk_commitment,
+        &eph_key_gen_first_message_party_two_zk_pok_commitment,
+        &eph_key_gen_first_message_party_two_public_share,
         &sign_party_one_first_message,
         &message,
     );
