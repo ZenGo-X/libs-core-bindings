@@ -17,22 +17,6 @@ use self::paillier::*;
 use serde_json;
 use utilities::json_utils::*;
 
-#[derive(Serialize, Deserialize)]
-struct Party1SecondMessageBindings {
-    pub comm_witness: party_one::CommWitness,
-    pub paillier_key_pair: party_one::PaillierKeyPair,
-    pub encrypted_pairs: EncryptedPairs,
-    pub challenge: ChallengeBits,
-    pub proof: Proof,
-    pub correct_key_proof: NICorrectKeyProof,
-}
-
-#[derive(Serialize, Deserialize)]
-struct PartyTwoSecondMessageBindings {
-    paillier_key_pair: party_two::PaillierPublic,
-    pub pdl_challenge: party_two::PDLchallenge,
-}
-
 pub fn party_one_first_message() -> String {
     to_json_str(MasterKey1::key_gen_first_message())
 }
@@ -56,14 +40,7 @@ pub fn party_one_second_message(
     let party_one_second_message =
         MasterKey1::key_gen_second_message(comm_witness, &ec_key_pair_party1, &proof);
 
-    to_json_str(Party1SecondMessageBindings {
-        comm_witness: party_one_second_message.0.comm_witness,
-        paillier_key_pair: party_one_second_message.1,
-        encrypted_pairs: party_one_second_message.2,
-        challenge: party_one_second_message.3,
-        proof: party_one_second_message.4,
-        correct_key_proof: party_one_second_message.5,
-    })
+    to_json_str(party_one_second_message)
 }
 
 pub fn party_two_second_message(
@@ -113,10 +90,11 @@ pub fn party_two_second_message(
     let key_gen_second_message_raw = key_gen_second_message.unwrap();
     assert!(key_gen_second_message_raw.0.is_ok());
 
-    to_json_str(PartyTwoSecondMessageBindings {
-        paillier_key_pair: key_gen_second_message_raw.1,
-        pdl_challenge: key_gen_second_message_raw.2,
-    })
+    to_json_str((
+        key_gen_second_message_raw.0.unwrap(),
+        key_gen_second_message_raw.1,
+        key_gen_second_message_raw.2,
+    ))
 }
 
 pub fn party_one_third_message(paillier_key_pair_str: String, pdl_challenge_str: String) -> String {
