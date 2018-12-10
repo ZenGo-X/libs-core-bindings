@@ -18,6 +18,9 @@ branch = "new_correct_key"
 git = "https://github.com/KZen-networks/multi-party-ecdsa"
 branch = "pdl-sub-protocol"
 
+[dependencies.curv]
+git = "https://github.com/KZen-networks/curv"
+
 [dependencies.kms]
 git = "https://github.com/KZen-networks/kms-secp256k1"
 branch = "schnorr_support"

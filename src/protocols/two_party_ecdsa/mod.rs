@@ -1,11 +1,11 @@
-extern crate cryptography_utils;
+extern crate curv;
 extern crate kms;
 extern crate multi_party_ecdsa;
 extern crate paillier;
 
-use self::cryptography_utils::cryptographic_primitives::proofs::dlog_zk_protocol::DLogProof;
-use self::cryptography_utils::cryptographic_primitives::twoparty::*;
-use self::cryptography_utils::GE;
+use self::curv::cryptographic_primitives::proofs::dlog_zk_protocol::DLogProof;
+use self::curv::cryptographic_primitives::twoparty::*;
+use self::curv::GE;
 use self::kms::chain_code;
 use self::kms::ecdsa::two_party::*;
 use protocols::two_party_ecdsa::kms::ManagementSystem;
