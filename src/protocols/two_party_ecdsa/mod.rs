@@ -164,14 +164,14 @@ pub fn party_one_chain_code_first_message() -> String {
     let cc_party_one_first_message: (dh_key_exchange::Party1FirstMessage, dh_key_exchange::CommWitness, dh_key_exchange::EcKeyPair) =
         chain_code::two_party::party1::ChainCode1::chain_code_first_message();
 
-    to_json_str(cc_party_one_first_message);
+    to_json_str(cc_party_one_first_message)
 }
 
 pub fn party_two_chain_code_first_message() -> String {
     let cc_party_two_first_message: (dh_key_exchange::Party2FirstMessage, dh_key_exchange::EcKeyPair) =
         chain_code::two_party::party2::ChainCode2::chain_code_first_message();
 
-    to_json_str(cc_party_two_first_message);
+    to_json_str(cc_party_two_first_message)
 }
 
 pub fn party_one_chain_code_second_message(
@@ -180,6 +180,8 @@ pub fn party_one_chain_code_second_message(
 ) -> String {
     let cc_party_one_second_message: dh_key_exchange::Party1SecondMessage =
         chain_code::two_party::party1::ChainCode1::chain_code_second_message(cc_comm_witness, cc_party_two_first_message_d_log_proof);
+
+    to_json_str(cc_party_one_second_message)
 }
 
 pub fn party_two_chain_code_second_message(
@@ -188,6 +190,8 @@ pub fn party_two_chain_code_second_message(
 ) -> String {
     let cc_party_two_second_message: Result<dh_key_exchange::Party2SecondMessage, curv::cryptographic_primitives::proofs::ProofError> =
         chain_code::two_party::party2::ChainCode2::chain_code_second_message(cc_party_one_first_message, cc_party_one_second_message);
+
+    to_json_str(cc_party_two_second_message)
 }
 
 pub fn party_one_get_master_key(
