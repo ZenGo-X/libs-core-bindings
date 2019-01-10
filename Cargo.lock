@@ -81,9 +81,9 @@ dependencies = [
 [[package]]
 name = "cryptography-utils"
 version = "0.1.0"
-source = "git+https://github.com/KZen-networks/cryptography-utils?branch=freeze-mvp-subzero#53b29b1987c87ce9297dcb77512dac421562734c"
+source = "git+https://github.com/KZen-networks/cryptography-utils?branch=v0.0.1-no-pdl#ce5e9be099cf0f58976c877cd5aeab2ce1f7a6c2"
 dependencies = [
- "curve25519-dalek 0.19.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "curve25519-dalek 0.21.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "rand 0.5.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "ring 0.13.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "rust-gmp 0.5.0 (git+https://github.com/KZen-networks/rust-gmp)",
@@ -95,7 +95,7 @@ dependencies = [
 
 [[package]]
 name = "curve25519-dalek"
-version = "0.19.1"
+version = "0.21.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "byteorder 1.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -103,7 +103,7 @@ dependencies = [
  "digest 0.7.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "generic-array 0.9.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "rand 0.5.5 (registry+https://github.com/rust-lang/crates.io-index)",
- "subtle 0.7.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "subtle 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -149,10 +149,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "kms"
 version = "0.1.0"
-source = "git+https://github.com/KZen-networks/kms?branch=freeze-mvp-subzero#6acaebb1cfbaa9c3f322404eb70d696a3b1e7086"
+source = "git+https://github.com/KZen-networks/kms?branch=v0.0.1-no-pdl#8ab4fe719537091a0e0785b87ebf219d6d4bbd63"
 dependencies = [
- "cryptography-utils 0.1.0 (git+https://github.com/KZen-networks/cryptography-utils?branch=freeze-mvp-subzero)",
- "multi-party-ecdsa 0.1.0 (git+https://github.com/KZen-networks/multi-party-ecdsa?branch=freeze-mvp-subzero)",
+ "cryptography-utils 0.1.0 (git+https://github.com/KZen-networks/cryptography-utils?branch=v0.0.1-no-pdl)",
+ "multi-party-ecdsa 0.1.0 (git+https://github.com/KZen-networks/multi-party-ecdsa?branch=v0.0.1-no-pdl)",
  "paillier 0.2.1-alpha.0 (git+https://github.com/mortendahl/rust-paillier)",
  "rand 0.5.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "rust-gmp 0.5.0 (git+https://github.com/KZen-networks/rust-gmp)",
@@ -177,9 +177,9 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 name = "libs-core-bindings"
 version = "0.1.0"
 dependencies = [
- "cryptography-utils 0.1.0 (git+https://github.com/KZen-networks/cryptography-utils?branch=freeze-mvp-subzero)",
- "kms 0.1.0 (git+https://github.com/KZen-networks/kms?branch=freeze-mvp-subzero)",
- "multi-party-ecdsa 0.1.0 (git+https://github.com/KZen-networks/multi-party-ecdsa?branch=freeze-mvp-subzero)",
+ "cryptography-utils 0.1.0 (git+https://github.com/KZen-networks/cryptography-utils?branch=v0.0.1-no-pdl)",
+ "kms 0.1.0 (git+https://github.com/KZen-networks/kms?branch=v0.0.1-no-pdl)",
+ "multi-party-ecdsa 0.1.0 (git+https://github.com/KZen-networks/multi-party-ecdsa?branch=v0.0.1-no-pdl)",
  "paillier 0.2.1-alpha.0 (git+https://github.com/mortendahl/rust-paillier)",
  "serde 1.0.80 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_derive 1.0.80 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -194,9 +194,9 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "multi-party-ecdsa"
 version = "0.1.0"
-source = "git+https://github.com/KZen-networks/multi-party-ecdsa?branch=freeze-mvp-subzero#05886ca8406e67c1768b67f30be1d2784348d952"
+source = "git+https://github.com/KZen-networks/multi-party-ecdsa?branch=v0.0.1-no-pdl#ee9059b9477d7bb8378f3e0d6cca611d77da5fbd"
 dependencies = [
- "cryptography-utils 0.1.0 (git+https://github.com/KZen-networks/cryptography-utils?branch=freeze-mvp-subzero)",
+ "cryptography-utils 0.1.0 (git+https://github.com/KZen-networks/cryptography-utils?branch=v0.0.1-no-pdl)",
  "paillier 0.2.1-alpha.0 (git+https://github.com/mortendahl/rust-paillier)",
  "serde 1.0.80 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_derive 1.0.80 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -387,7 +387,7 @@ dependencies = [
 
 [[package]]
 name = "subtle"
-version = "0.7.1"
+version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
@@ -451,19 +451,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum crossbeam-deque 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "f739f8c5363aca78cfb059edf753d8f0d36908c348f3d8d1503f03d8b75d9cf3"
 "checksum crossbeam-epoch 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)" = "927121f5407de9956180ff5e936fe3cf4324279280001cd56b669d28ee7e9150"
 "checksum crossbeam-utils 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "2760899e32a1d58d5abb31129f8fae5de75220bc2176e77ff7c627ae45c918d9"
-"checksum cryptography-utils 0.1.0 (git+https://github.com/KZen-networks/cryptography-utils?branch=freeze-mvp-subzero)" = "<none>"
-"checksum curve25519-dalek 0.19.1 (registry+https://github.com/rust-lang/crates.io-index)" = "15d6d81c070d8090389f752510ce22c7d571100a78fa4e7c06e6f6d95585bb49"
+"checksum cryptography-utils 0.1.0 (git+https://github.com/KZen-networks/cryptography-utils?branch=v0.0.1-no-pdl)" = "<none>"
+"checksum curve25519-dalek 0.21.0 (registry+https://github.com/rust-lang/crates.io-index)" = "ad5e45d66960751c90ef70686c16c5c9c83469a7052c0af84667d8bdb9b5e6bc"
 "checksum digest 0.7.6 (registry+https://github.com/rust-lang/crates.io-index)" = "03b072242a8cbaf9c145665af9d250c59af3b958f83ed6824e13533cf76d5b90"
 "checksum either 1.5.0 (registry+https://github.com/rust-lang/crates.io-index)" = "3be565ca5c557d7f59e7cfcf1844f9e3033650c929c6566f511e8005f205c1d0"
 "checksum fuchsia-zircon 0.3.3 (registry+https://github.com/rust-lang/crates.io-index)" = "2e9763c69ebaae630ba35f74888db465e49e259ba1bc0eda7d06f4a067615d82"
 "checksum fuchsia-zircon-sys 0.3.3 (registry+https://github.com/rust-lang/crates.io-index)" = "3dcaa9ae7725d12cdb85b3ad99a434db70b468c09ded17e012d86b5c1010f7a7"
 "checksum generic-array 0.9.0 (registry+https://github.com/rust-lang/crates.io-index)" = "ef25c5683767570c2bbd7deba372926a55eaae9982d7726ee2a1050239d45b9d"
 "checksum itoa 0.4.3 (registry+https://github.com/rust-lang/crates.io-index)" = "1306f3464951f30e30d12373d31c79fbd52d236e5e896fd92f96ec7babbbe60b"
-"checksum kms 0.1.0 (git+https://github.com/KZen-networks/kms?branch=freeze-mvp-subzero)" = "<none>"
+"checksum kms 0.1.0 (git+https://github.com/KZen-networks/kms?branch=v0.0.1-no-pdl)" = "<none>"
 "checksum lazy_static 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "ca488b89a5657b0a2ecd45b95609b3e848cf1755da332a0da46e2b2b1cb371a7"
 "checksum libc 0.2.43 (registry+https://github.com/rust-lang/crates.io-index)" = "76e3a3ef172f1a0b9a9ff0dd1491ae5e6c948b94479a3021819ba7d860c8645d"
 "checksum memoffset 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "0f9dc261e2b62d7a622bf416ea3c5245cdd5d9a7fcc428c0d06804dfce1775b3"
-"checksum multi-party-ecdsa 0.1.0 (git+https://github.com/KZen-networks/multi-party-ecdsa?branch=freeze-mvp-subzero)" = "<none>"
+"checksum multi-party-ecdsa 0.1.0 (git+https://github.com/KZen-networks/multi-party-ecdsa?branch=v0.0.1-no-pdl)" = "<none>"
 "checksum nodrop 0.1.12 (registry+https://github.com/rust-lang/crates.io-index)" = "9a2228dca57108069a5262f2ed8bd2e82496d2e074a06d1ccc7ce1687b6ae0a2"
 "checksum num-traits 0.1.43 (registry+https://github.com/rust-lang/crates.io-index)" = "92e5113e9fd4cc14ded8e499429f396a20f98c772a47cc8622a736e1ec843c31"
 "checksum num-traits 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)" = "0b3a5d7cc97d6d30d8b9bc8fa19bf45349ffe46241e8816f50f62f6d6aaabee1"
@@ -485,7 +485,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum serde 1.0.80 (registry+https://github.com/rust-lang/crates.io-index)" = "15c141fc7027dd265a47c090bf864cf62b42c4d228bbcf4e51a0c9e2b0d3f7ef"
 "checksum serde_derive 1.0.80 (registry+https://github.com/rust-lang/crates.io-index)" = "225de307c6302bec3898c51ca302fc94a7a1697ef0845fcee6448f33c032249c"
 "checksum serde_json 1.0.32 (registry+https://github.com/rust-lang/crates.io-index)" = "43344e7ce05d0d8280c5940cabb4964bea626aa58b1ec0e8c73fa2a8512a38ce"
-"checksum subtle 0.7.1 (registry+https://github.com/rust-lang/crates.io-index)" = "5938f1b89f10d6356339f071eca74209deeae0b6891c2678d655feb78637e369"
+"checksum subtle 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "2d67a5a62ba6e01cb2192ff309324cb4875d0c451d55fe2319433abe7a05a8ee"
 "checksum syn 0.15.12 (registry+https://github.com/rust-lang/crates.io-index)" = "34ab9797e47d24cb76b8dc4d24ff36807018c7cc549c4cba050b068be0c586b0"
 "checksum typenum 1.10.0 (registry+https://github.com/rust-lang/crates.io-index)" = "612d636f949607bdf9b123b4a6f6d966dedf3ff669f7f045890d3a4a73948169"
 "checksum unicode-xid 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "fc72304796d0818e357ead4e000d19c9c174ab23dc11093ac919054d20a6a7fc"
